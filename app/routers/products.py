@@ -1,13 +1,18 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import Session, select
-from app.models.product import Product
+from app.models.product import Product, ProductCreate
 from app.database import get_session
 
 router = APIRouter()
 
 @router.get('/products')
-def get_products(session: Session = Depends(get_session)):
-    products = session.exec(select(Product)).all()
+def get_products(category: str | None = None, session: Session = Depends(get_session)):
+    statement = select(Product)
+
+    if category:
+        statement = statement.where(Product.category == category)
+
+    products = session.exec(statement).all()
     return products
 
 @router.get('/products/{product_id}')
@@ -18,11 +23,12 @@ def get_product(product_id: int, session: Session = Depends(get_session)):
     return product
 
 @router.post('/products')
-def create_product(product: Product, session: Session = Depends(get_session)):
-    session.add(product)
+def create_product(product: ProductCreate, session: Session = Depends(get_session)):
+    db_product = Product.model_validate(product)
+    session.add(db_product)
     session.commit()
-    session.refresh(product)
-    return product
+    session.refresh(db_product)
+    return db_product
 
 @router.put('/products/{product_id}')
 def update_product(product_id: int, updated_product: Product, session: Session = Depends(get_session)):
@@ -43,4 +49,4 @@ def delete_product(product_id: int, session: Session = Depends(get_session)):
         raise HTTPException(status_code=404, detail='Product not found')
     session.delete(product)
     session.commit()
-    return {'message': f'Product {product_id} deleted'}
+    return {'message': f'Product {product_id} deleted'} 
