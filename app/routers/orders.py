@@ -19,7 +19,6 @@ def checkout(session: Session = Depends(get_session)):
 
     total_price = 0
 
-    # First loop: validate everything and calculate total
     for cart_item in cart_items:
         product = session.get(Product, cart_item.product_id)
 
@@ -34,17 +33,14 @@ def checkout(session: Session = Depends(get_session)):
 
         total_price += product.price * cart_item.quantity
 
-    # Second loop: reduce inventory
     for cart_item in cart_items:
         product = session.get(Product, cart_item.product_id)
         product.stock -= cart_item.quantity
         session.add(product)
 
-    # Create the completed order
     order = Order(total_price=round(total_price, 2))
     session.add(order)
 
-    # Clear purchased items from cart
     for cart_item in cart_items:
         session.delete(cart_item)
 

@@ -11,3 +11,4 @@ class CartItem(SQLModel, table=True):
 class CartItemCreate(SQLModel):
     product_id: int
     quantity: int = Field(gt=0)
+
