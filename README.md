@@ -231,7 +231,7 @@ As my first project, I learned a lot about the different parts that make up the 
 
 ## Debugging Challenges
 
-Encountered some debugging situations such as a
+I encountered some debugging situations such as a
 `sqlite3.OperationalError: table product has no column named description`.
 This error occurred when the Product model was updated with new fields but the existing SQLite database still had the old table structure. 
 I was able to fix the error by deleting the existing database and allowing the application to recreate it with the updated table structure.
