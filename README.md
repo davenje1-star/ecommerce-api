@@ -4,19 +4,11 @@ A Python e-commerce REST API built with FastAPI for learning backend development
 
 ## Live API
 
-The API is deployed on Render and uses Neon PostgreSQL as the production database.
+Open the deployed API here:
 
-Live API:
+[https://ecommerce-api-438s.onrender.com](https://ecommerce-api-438s.onrender.com)
 
-```text
-https://ecommerce-api-438s.onrender.com
-```
-
-The root URL automatically redirects to the interactive Swagger UI documentation:
-
-```text
-https://ecommerce-api-438s.onrender.com/docs
-```
+The main URL automatically redirects to the interactive Swagger UI, where the API endpoints can be viewed and tested.
 
 ## Features
 
