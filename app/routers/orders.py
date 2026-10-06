@@ -19,6 +19,7 @@ def checkout(session: Session = Depends(get_session)):
 
     total_price = 0
 
+    # Validate every cart item before changing inventory.
     for cart_item in cart_items:
         product = session.get(Product, cart_item.product_id)
 
@@ -33,6 +34,7 @@ def checkout(session: Session = Depends(get_session)):
 
         total_price += product.price * cart_item.quantity
 
+    # Reduce inventory only after every cart item passes validation.
     for cart_item in cart_items:
         product = session.get(Product, cart_item.product_id)
         product.stock -= cart_item.quantity
@@ -41,6 +43,7 @@ def checkout(session: Session = Depends(get_session)):
     order = Order(total_price=round(total_price, 2))
     session.add(order)
 
+    # Clear purchased items from the cart.
     for cart_item in cart_items:
         session.delete(cart_item)
 

@@ -8,6 +8,8 @@ from app.database import create_db_and_tables
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    """Initialize database tables when the application starts."""
+
     create_db_and_tables()
     yield
 
@@ -19,6 +21,8 @@ app.include_router(cart.router)
 app.include_router(orders.router)
 
 
-@app.get("/")
+@app.get('/')
 def home():
-    return {'message': "E-commerce API is running"}
+    """Return the API's current status."""
+
+    return {'message': 'E-commerce API is running'}
