@@ -4,7 +4,7 @@ from fastapi import FastAPI
 
 from app.routers import products, cart, orders
 from app.database import create_db_and_tables
-
+from fastapi.responses import RedirectResponse
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -21,8 +21,6 @@ app.include_router(cart.router)
 app.include_router(orders.router)
 
 
-@app.get('/')
-def home():
-    """Return the API's current status."""
-
-    return {'message': 'E-commerce API is running'}
+@app.get("/")
+def read_root():
+    return RedirectResponse(url="/docs")
